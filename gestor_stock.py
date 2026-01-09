@@ -24,7 +24,7 @@ class GestorStock:
     ''' Salida: Bool= True si bien o Error si no puede procesar el fichero '''
 
     def cargar_datos(self):
-        self.datos = []  # Clear existing data to prevent duplicates
+        self.datos = []  
         if (exists("./actividad3_stock_medicamentos.csv")):
             with open('./actividad3_stock_medicamentos.csv', 'r',encoding='utf-8') as fichero:
                 datos=fichero.readlines()[1:]
@@ -123,4 +123,5 @@ class GestorStock:
             self.contador = self.contador + 1
             self.datos=self.datos[1:]
             return self.busca(id)
+
 
