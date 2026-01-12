@@ -32,7 +32,7 @@ class GestorStock:
                     dato = dato.strip('\n')
                     dato = dato.split(";")
                     self.datos.append(dato)
-            fichero.close()
+            
             return True
         else:
             raise FileNotFoundError("No se ha encontrado el archivo actividad3_stock_medicamentos.csv")
@@ -115,7 +115,7 @@ class GestorStock:
                            contador=contador+1
                        fichero.write(cadena)
                        fichero.write('\n')
-                fichero.close()
+                
                 print('Datos guardados')
                 return True
             except OSError:
@@ -142,4 +142,5 @@ class GestorStock:
             self.contador = self.contador + 1
             self.datos=self.datos[1:]
             return self.busca(id)
+
 
