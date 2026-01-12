@@ -24,7 +24,7 @@ class GestorStock:
     ''' Salida: Bool= True si bien o Error si no puede procesar el fichero '''
 
     def cargar_datos(self):
-        self.datos = []  
+        self.datos = []
         if (exists("./actividad3_stock_medicamentos.csv")):
             with open('./actividad3_stock_medicamentos.csv', 'r',encoding='utf-8') as fichero:
                 datos=fichero.readlines()[1:]
@@ -63,6 +63,7 @@ class GestorStock:
         for medicamento in self.datos:
             if medicamento[0]==id:
                 medicamento[2]=cantidad
+                print('Se ha actualizado el stock del medicamento: ',medicamento[1],' con la cantidad:', medicamento[2])
         return self.guardar_datos()
 
     ''' Método: eliminar_caducados. El método carga datos de fichero y compara la fecha actual con la que está en fichero,
@@ -76,6 +77,7 @@ class GestorStock:
             fecha_que_consta=datetime.strptime(medicamento[3], "%Y-%m-%d")
             if fecha_actual>fecha_que_consta:
                 self.datos.remove(medicamento)
+                print('Se ha elimanado el medicamento caducado: ',medicamento[1],' que tenía fechas de: ',medicamento[3])
         return self.guardar_datos()
 
     ''' Método: guardar_datos. Guarda los datos de la lista de listas en el mismo fichero de donde se leyeron'''
@@ -88,22 +90,25 @@ class GestorStock:
 
     def guardar_datos(self):
         self.cargar_datos()
-        with open('actividad3_stock_medicamentos.csv', 'w+',encoding='utf-8') as fichero:
-            fichero.write('id_medicamento;nombre;cantidad;fecha_caducidad\n')
-            for medicamento in self.datos:
-               cadena=''
-               contador=0
-               longi=len(medicamento)
-               for item in medicamento:
-                   if contador<longi-1:
-                    cadena=cadena+item+';'
-                   else:
-                       cadena=cadena+item
-                   contador=contador+1
-               fichero.write(cadena)
-               fichero.write('\n')
-        fichero.close()
-        return True
+        try:
+            with open('actividad3_stock_medicamentos.csv', 'w+',encoding='utf-8') as fichero:
+                fichero.write('id_medicamento;nombre;cantidad;fecha_caducidad\n')
+                for medicamento in self.datos:
+                   cadena=''
+                   contador=0
+                   longi=len(medicamento)
+                   for item in medicamento:
+                       if contador<longi-1:
+                        cadena=cadena+item+';'
+                       else:
+                           cadena=cadena+item
+                       contador=contador+1
+                   fichero.write(cadena)
+                   fichero.write('\n')
+            fichero.close()
+            return True
+        except OSError:
+            return ('Fallo al slavar el fichero')
 
     ''' Método busca(id), método auxiliar para la búsqueda recursiva'''
     ''' Input: id, string con el id a buscar'''
@@ -123,5 +128,4 @@ class GestorStock:
             self.contador = self.contador + 1
             self.datos=self.datos[1:]
             return self.busca(id)
-
 
